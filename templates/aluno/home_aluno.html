@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block container %}
+    <h2>Área do aluno</h2>
+    {% if user.is_authenticated or user.is_superuser  %}
+        <p>Bem vindo aluno: {{ user.aluno.nome }}</p>
+
+        <a href="{% url 'alunos:list_curso_aluno' %}">
+            <button type="button" class="btn btn-primary btn-lg btn-block">Listar Meus cursos</button>
+        </a>
+        <br>
+        <br>
+        <a href="{% url 'alunos:aluno_matricula' %}">
+            <button type="button" class="btn btn-primary btn-lg btn-block">Fazer matricula em um curso</button>
+        </a>
+    {% else %}
+        <br>
+        <h3>Você não tem autorização para fazer operações nessa página.</h3>
+    {% endif %}
+{% endblock %}

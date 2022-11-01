@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block container %}
+
+<table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">Título</th>
+        <th scope="col">Carga horária</th>
+        <th scope="col">Vagas</th>
+        <th scope="col">Data</th>
+        <th scope="col">Público alvo</th>
+        <th scope="col">Periodo de inscrição</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for curso in object_list %}
+      <tr>
+        <td>{{curso.titulo}}</td>
+        <td>{{curso.carga_horaria}}</td>
+        <td>{{curso.numero_vagas}}</td>
+        <td>{{curso.data}}</td>
+        <td>{{curso.prublco_alvo}}</td>
+        <td>De {{curso.inicio_matriculas}} a {{curso.fim_matriculas}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+{% endblock %}
