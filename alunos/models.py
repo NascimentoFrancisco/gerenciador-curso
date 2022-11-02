@@ -16,8 +16,8 @@ class Aluno(models.Model):
         return self.nome
 
 class CursoAluno(models.Model):
-    aluno = models.ForeignKey(Aluno,on_delete= models.PROTECT)
-    curso = models.ForeignKey(Curso,on_delete= models.PROTECT)
+    aluno = models.ForeignKey(Aluno,on_delete= models.PROTECT)#Mudar o ralcionamento para 1:1
+    curso = models.ForeignKey(Curso,on_delete= models.PROTECT)#
     data_matricula = models.DateField(default = now.date())
 
     def __str__(self):

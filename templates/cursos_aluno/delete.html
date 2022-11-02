@@ -12,7 +12,10 @@
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="btn btn-danger">Excluir</button>
-            <a href="#" onClick="history.go(-1)" class="btn btn-link"> Cancelar</a>
+            
+            <a href="{% url 'alunos:list_curso_aluno' %}"> 
+                <button type="button" class="btn btn-outline-danger">Cancelar</button>
+            </a>
         </form>
     </div>
 </div>

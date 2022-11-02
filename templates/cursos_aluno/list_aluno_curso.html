@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block container %}
+{% if user.is_authenticated %}
+{% if message.tags  %}
+  <p class="text-danger">{{messages}}</p>
+{% endif %}
+<h3>Lista de alunos matriculados no curso.</h3>
+<table class="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">Aluno</th>
+        <th scope="col">Data matricula</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for aluno_curso in object_list %}
+      <tr>
+        <td>{{aluno_curso.aluno}}</td>
+        <td>{{aluno_curso.data_matricula}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+    <br>
+    <h3>Você não possui acesso a esta página.</h3>
+{% endif %}
+
+{% endblock %}

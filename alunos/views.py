@@ -35,7 +35,7 @@ class AlunoCreate(LoginRequiredMixin,CreateView):
         form.instance.user = CustomUser.objects.get(id=self.request.user.id)
         return super().form_valid(form)
 
-class CursoAlunoCreate(LoginRequiredMixin,CreateView):
+class CursoAlunoCreate(LoginRequiredMixin,CreateView):#Melhorar o fluxo de craição de matricula
     model = CursoAluno
     template_name = 'create.html'
     fields = ['curso']
@@ -50,8 +50,12 @@ class CursoAlunoCreate(LoginRequiredMixin,CreateView):
             return HttpResponseRedirect(reverse_lazy('aluno:create_aluno'))
         return super().form_valid(form)
 
+
 class CursoAlunoList(LoginRequiredMixin,ListView):
-    
+
+    """
+    Essa view busca os cursos no qual o aluno logado está matriculado.
+    """   
     template_name = 'cursos_aluno/list.html'
     login_url = reverse_lazy('accounts:login_user')
 
@@ -71,13 +75,25 @@ class CursoAlunoList(LoginRequiredMixin,ListView):
 
         return queryset
 
+class CursoAlunoListPorCurso(LoginRequiredMixin,ListView):
+    
+    """
+    Esse view busca as matriculas feitas em um determinaddo curso através de seu id passdo na url.
+    """
+    model = CursoAluno
+    template_name = 'cursos_aluno/list_aluno_curso.html'
+    login_url = reverse_lazy('accounts:login_user')
+
+    def get_queryset(self):
+        queryset = CursoAluno.objects.filter(curso__id=self.kwargs['pk'])
+        return queryset
 
 class CursoAlunoDelete(LoginRequiredMixin, DeleteView):
     model = CursoAluno
     login_url = reverse_lazy('accounts:login_user')
-    success_url = reverse_lazy('cursos:list')
+    success_url = reverse_lazy('cursos:list_curso_aluno')
     template_name = 'cursos_aluno/delete.html'
 
     def get_success_url(self):
         messages.success(self.request, "Curso excluído com sucesso!")
-        return reverse_lazy('cursos:list')
+        return reverse_lazy('cursos:list_curso_aluno')

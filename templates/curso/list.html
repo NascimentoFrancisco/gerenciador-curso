@@ -2,6 +2,8 @@
 
 {% block container %}
 
+<h3>Listagem dos cursos da plataforma</h3>
+
 <table class="table table-bordered">
     <thead>
       <tr>
@@ -11,6 +13,9 @@
         <th scope="col">Data</th>
         <th scope="col">Público alvo</th>
         <th scope="col">Periodo de inscrição</th>
+        {% if user.is_superuser %}
+          <th scope="col">Opções</th>
+        {% endif %}
       </tr>
     </thead>
     <tbody>
@@ -19,9 +24,19 @@
         <td>{{curso.titulo}}</td>
         <td>{{curso.carga_horaria}}</td>
         <td>{{curso.numero_vagas}}</td>
-        <td>{{curso.data}}</td>
+        <td>{{curso.data|date:"d/m/Y"}}</td>
         <td>{{curso.prublco_alvo}}</td>
-        <td>De {{curso.inicio_matriculas}} a {{curso.fim_matriculas}}</td>
+        <td>
+          De <b>{{curso.inicio_matriculas|date:"d/m/Y"}}</b> 
+          até <b>{{curso.fim_matriculas|date:"d/m/Y"}}</b>
+        </td>
+        {% if user.is_superuser %}
+          <td>
+            <a href="{% url 'alunos:list_aluno_curso' curso.id %}">
+              Listar alunos
+            </a>
+          </td>
+        {% endif %}
       </tr>
       {% endfor %}
     </tbody>
