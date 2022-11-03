@@ -2,11 +2,13 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.contrib import messages
+from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, DeleteView, ListView,View
 from accounts.models import CustomUser
 
 from .models import Aluno, CursoAluno
+from curso.models import Curso
 from .forms import AlunoCreateForm
 # Create your views here.
 
@@ -39,15 +41,35 @@ class CursoAlunoCreate(LoginRequiredMixin,CreateView):#Melhorar o fluxo de crai�
     model = CursoAluno
     template_name = 'create.html'
     fields = ['curso']
-    login_url = reverse_lazy('alunos:home_aluno')
-    success_url = reverse_lazy('home')
+    login_url = reverse_lazy('accounts:login_user')
+    success_url = reverse_lazy('alunos:list_curso_aluno')
 
     def form_valid(self, form):
         try:
             form.instance.aluno = Aluno.objects.get(user=self.request.user)
+            curso = Curso.objects.get(id=form.data['curso'])
+            
+            if timezone.now() >= curso.inicio_matriculas and  timezone.now() <= curso.fim_matriculas:        
+                messages.success(self.request, "Matrícula realizada com sucesso")
+                form.save()
+
+            elif timezone.now() < curso.inicio_matriculas:
+                data = curso.inicio_matriculas.date().strftime("%d/%m/%Y")
+                messages.info(self.request, 
+                f"Perido de matrículas não iniciou ainda. Tal período se inicia {data}")
+                return HttpResponseRedirect(reverse_lazy('alunos:aluno_matricula'))
+
+            elif timezone.now() > curso.fim_matriculas:
+                data = curso.fim_matriculas.date().strftime("%d/%m/%Y")
+                messages.info(self.request, 
+                f"Perido de matrículas já se encerrado. Tal período se encerrou {data}")
+                return HttpResponseRedirect(reverse_lazy('alunos:aluno_matricula'))
+
         except Aluno.DoesNotExist:
-            messages.warning('Complete seu cadstro!')
+            
+            messages.warning(self.request,'Complete seu cadstro!')
             return HttpResponseRedirect(reverse_lazy('aluno:create_aluno'))
+        
         return super().form_valid(form)
 
 
@@ -65,7 +87,7 @@ class CursoAlunoList(LoginRequiredMixin,ListView):
         try:
             aluno = Aluno.objects.get(user=user)
         except Aluno.DoesNotExist:
-            messages.warning('Complete seu cadstro!')
+            messages.warning('Complete seu cadastro!')
             return HttpResponseRedirect(reverse_lazy('aluno:create_aluno'))
         try:
             queryset = CursoAluno.objects.filter(aluno=aluno)
@@ -91,9 +113,9 @@ class CursoAlunoListPorCurso(LoginRequiredMixin,ListView):
 class CursoAlunoDelete(LoginRequiredMixin, DeleteView):
     model = CursoAluno
     login_url = reverse_lazy('accounts:login_user')
-    success_url = reverse_lazy('cursos:list_curso_aluno')
+    success_url = reverse_lazy('alunos:list_curso_aluno')
     template_name = 'cursos_aluno/delete.html'
 
     def get_success_url(self):
         messages.success(self.request, "Curso excluído com sucesso!")
-        return reverse_lazy('cursos:list_curso_aluno')
+        return reverse_lazy('alunos:list_curso_aluno')

@@ -2,9 +2,11 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 from curso.models import Curso
+from django.core.exceptions import ValidationError
 # Create your models here.
 
 now = timezone.now()
+
 
 class Aluno(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

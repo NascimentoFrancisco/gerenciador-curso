@@ -1,9 +1,6 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block container %}
-{% if message.tags  %}
-    <p class="text-danger">{{message}}</p>
-{% endif %}
 <h2>Cadastrados e alterações</h2>
     <form method="POST" class="table" enctype="multipart/form-data">
     {% csrf_token %}

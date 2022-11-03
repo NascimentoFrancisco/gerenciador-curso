@@ -10,9 +10,6 @@
                       {{ error }}
                   </div>
         {% endfor %}
-        {% if message.tags  %}
-            <p class="text-danger">{{messages}}</p>
-        {% endif %}
     </div>  
                 <form class="form-horizontal" method="post">
                     {% csrf_token %}

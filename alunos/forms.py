@@ -1,5 +1,7 @@
 from django import forms
-from .models import Aluno
+from django.utils import timezone
+from curso.models import Curso
+from .models import Aluno, CursoAluno
 
 class AlunoCreateForm(forms.ModelForm):
     class Meta:
