@@ -5,8 +5,6 @@ from curso.models import Curso
 from django.core.exceptions import ValidationError
 # Create your models here.
 
-now = timezone.now()
-
 
 class Aluno(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -18,9 +16,9 @@ class Aluno(models.Model):
         return self.nome
 
 class CursoAluno(models.Model):
-    aluno = models.ForeignKey(Aluno,on_delete= models.PROTECT)#Mudar o ralcionamento para 1:1
-    curso = models.ForeignKey(Curso,on_delete= models.PROTECT)#
-    data_matricula = models.DateField(default = now.date())
+    aluno = models.ForeignKey(Aluno,on_delete= models.PROTECT)
+    curso = models.ForeignKey(Curso,on_delete= models.PROTECT)
+    data_matricula = models.DateField(default = timezone.now().date())
 
     def __str__(self):
         return self.curso.titulo

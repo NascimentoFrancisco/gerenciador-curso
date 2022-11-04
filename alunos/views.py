@@ -37,7 +37,7 @@ class AlunoCreate(LoginRequiredMixin,CreateView):
         form.instance.user = CustomUser.objects.get(id=self.request.user.id)
         return super().form_valid(form)
 
-class CursoAlunoCreate(LoginRequiredMixin,CreateView):#Melhorar o fluxo de craição de matricula
+class CursoAlunoCreate(LoginRequiredMixin,CreateView):
     model = CursoAluno
     template_name = 'create.html'
     fields = ['curso']
@@ -46,12 +46,18 @@ class CursoAlunoCreate(LoginRequiredMixin,CreateView):#Melhorar o fluxo de crai�
 
     def form_valid(self, form):
         try:
-            form.instance.aluno = Aluno.objects.get(user=self.request.user)
+            aluno = Aluno.objects.get(user=self.request.user)
+            form.instance.aluno = aluno
             curso = Curso.objects.get(id=form.data['curso'])
-            
-            if timezone.now() >= curso.inicio_matriculas and  timezone.now() <= curso.fim_matriculas:        
-                messages.success(self.request, "Matrícula realizada com sucesso")
-                form.save()
+            curso_aluno = CursoAluno.objects.filter(curso__id = curso.id)
+        
+            if CursoAluno.objects.filter(aluno__id = aluno.id,curso__id=curso.id).exists():
+                messages.warning(self.request,'Você já está matrículado nesse curso!')
+                return HttpResponseRedirect(reverse_lazy('alunos:list_curso_aluno'))
+
+            elif len(curso_aluno) >= curso.numero_vagas:
+                messages.warning(self.request,'Vagas esgotadas!')
+                return HttpResponseRedirect(reverse_lazy('alunos:aluno_matricula'))
 
             elif timezone.now() < curso.inicio_matriculas:
                 data = curso.inicio_matriculas.date().strftime("%d/%m/%Y")
@@ -64,6 +70,13 @@ class CursoAlunoCreate(LoginRequiredMixin,CreateView):#Melhorar o fluxo de crai�
                 messages.info(self.request, 
                 f"Perido de matrículas já se encerrado. Tal período se encerrou {data}")
                 return HttpResponseRedirect(reverse_lazy('alunos:aluno_matricula'))
+            
+            elif timezone.now() >= curso.inicio_matriculas and  timezone.now() <= curso.fim_matriculas:        
+                messages.success(self.request, "Matrícula realizada com sucesso")
+                form.save()
+            else:
+                messages.success(self.request, "Algo deu errado!")
+                return HttpResponseRedirect(reverse_lazy('alunos:home_aluno'))
 
         except Aluno.DoesNotExist:
             
