@@ -3,7 +3,7 @@
 {% block container %}
     <h2>Área do aluno</h2>
     {% if user.is_authenticated or user.is_superuser  %}
-        <p>Bem vindo aluno: {{ user.aluno.nome }}</p>
+        <p>Bem vindo aluno(a): {{ user.aluno.nome }}</p>
 
         <a href="{% url 'alunos:list_curso_aluno' %}">
             <button type="button" class="btn btn-primary btn-lg btn-block">Listar Meus cursos</button>

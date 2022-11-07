@@ -52,7 +52,7 @@ class CursoAlunoCreate(LoginRequiredMixin,CreateView):
             curso_aluno = CursoAluno.objects.filter(curso__id = curso.id)
         
             if CursoAluno.objects.filter(aluno__id = aluno.id,curso__id=curso.id).exists():
-                messages.warning(self.request,'Você já está matrículado nesse curso!')
+                messages.warning(self.request,'Você já possui matrícula nesse curso!')
                 return HttpResponseRedirect(reverse_lazy('alunos:list_curso_aluno'))
 
             elif len(curso_aluno) >= curso.numero_vagas:
@@ -105,7 +105,7 @@ class CursoAlunoList(LoginRequiredMixin,ListView):
         try:
             queryset = CursoAluno.objects.filter(aluno=aluno)
         except CursoAluno.DoesNotExist:
-            messages.warning('Você não está matriculado em nenhum curso!')
+            messages.warning('Você não possui matrícula em nenhum curso!')
             return None
 
         return queryset
