@@ -20,9 +20,12 @@ from django.urls import re_path as url
 from django.conf import settings
 from django.views.static import serve
 
+from .views import HomeView, Handler404, Handler500
 
 
-from .views import HomeView
+handler404 = Handler404.as_view()
+handler500 = Handler500.as_view()
+
 
 urlpatterns = [
     url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
