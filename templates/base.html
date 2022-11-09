@@ -72,8 +72,13 @@
                     
                     <br>
                     <br>
-                    <a href="{% url 'accounts:create_user' %}">Se não possui cadastro clique aqui e se cadastre como aluno.</a>
-
+                    {% if user.is_authenticated or user.is_superuser%}
+                        <a class="nav-link active" aria-current="page" href="{% url 'accounts:logout' %}">
+                            <button type="button" class="btn btn-outline-danger">Sair</button>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'accounts:create_user' %}">Se não possui cadastro clique aqui e se cadastre como aluno.</a>
+                    {% endif %}
                 {% endblock %}
             </div>
         </div>

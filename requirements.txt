@@ -6,3 +6,4 @@ django-environ==0.9.0
 django-jazzmin==2.5.0
 psycopg2-binary==2.9.5
 sqlparse==0.4.3
+validate-docbr==1.10.0

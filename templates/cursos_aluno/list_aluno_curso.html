@@ -10,6 +10,7 @@
     <thead>
       <tr>
         <th scope="col">Aluno</th>
+        <th scope="col">CPF</th>
         <th scope="col">Data matricula</th>
       </tr>
     </thead>
@@ -17,6 +18,7 @@
     {% for aluno_curso in object_list %}
       <tr>
         <td>{{aluno_curso.aluno}}</td>
+        <td>{{aluno_curso.aluno.user}}</td>
         <td>{{aluno_curso.data_matricula}}</td>
       </tr>
       {% endfor %}
