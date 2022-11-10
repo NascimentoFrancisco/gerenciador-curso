@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block container %}
-    <h2>Erro 404</h2>
-    <p>Você tentou acessar uma página que não existe no nosso site.</p>
-    <br>
+    <h2>Ops, página não encontrada!</h2>
+    <img src="{% static 'images_erros/erro_404.jpg' %}" width="300" height="250">
+    <p>Você tentou acessar uma página que não existe no nosso site. Você pode retornar para o início do site.</p>
+    
     <a href="/">
         <button type="button" class="btn btn-outline-primary">Início</button>
     </a>

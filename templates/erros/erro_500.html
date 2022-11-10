@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block container %}
-    <h2>Erro 500, erro no servidor</h2>
-    <p>Aconteceu algum erro interno nessa aplicação!</p>
-    <br>
+    <h2>Ops, erro de servidor!</h2>
+    <img src="{% static 'images_erros/erro_500.jpg' %}">
+    <p>Aconteceu algum erro interno em nossa aplicação. Você pode retornar para o início do site.</p>
     <a href="/">
         <button type="button" class="btn btn-outline-primary">Início</button>
     </a>

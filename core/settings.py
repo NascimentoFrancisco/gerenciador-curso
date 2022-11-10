@@ -14,10 +14,7 @@ from pathlib import Path
 import os
 import environ
 
-env = environ.Env(
-    # set casting, default value
-    #DEBUG=(bool, True)
-)
+env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -28,10 +25,10 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env.str('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True#env('DEBUG')
+DEBUG = env.bool('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
@@ -91,12 +88,12 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     "default":{
-        "ENGINE":env('DB_ENGINE'),
-        "NAME":env('DB_NAME'),
-        "USER":env('DB_USER'),
-        "PASSWORD":env('DB_PASSWORD'),
-        "HOST":env('DB_HOST'),
-        "PORT":env('DB_PORT'),
+        "ENGINE":env.str('DB_ENGINE'),
+        "NAME":env.str('DB_NAME'),
+        "USER":env.str('DB_USER'),
+        "PASSWORD":env.str('DB_PASSWORD'),
+        "HOST":env.str('DB_HOST'),
+        "PORT":env.str('DB_PORT'),
     }
 }
 
