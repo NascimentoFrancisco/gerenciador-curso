@@ -5,6 +5,8 @@ from django.contrib import messages
 from django.utils import timezone
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, DeleteView, ListView,View
+from django.core.mail import send_mail
+from django.conf import settings
 from accounts.models import CustomUser
 
 from .models import Aluno, CursoAluno
@@ -74,6 +76,9 @@ class CursoAlunoCreate(LoginRequiredMixin,CreateView):
             elif timezone.now() >= curso.inicio_matriculas and  timezone.now() <= curso.fim_matriculas:        
                 messages.success(self.request, "Matrícula realizada com sucesso")
                 form.save()
+                """ send_mail('Mátricula',
+                    f'Matrícula no curso {curso.titulo} foi realizada e confirmada com sucesso!',
+                    settings.EMAIL_HOST_USER,['fmilk9049@gmail.com']) """
             else:
                 messages.success(self.request, "Algo deu errado!")
                 return HttpResponseRedirect(reverse_lazy('alunos:home_aluno'))

@@ -151,6 +151,16 @@ LOGIN_REDIRECT_URL = 'home'
 LOGOUT = 'logout'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+#Email
+#DEFAULT_FROM_EMAIL = 'Cursos IFPI'
+#EMAIL_BACKEND = env.str('EMAIL_BACKEND')
+#EMAIL_HOST_USER = env.str('EMAIL_HOST_USER')
+#EMAIL_HOST_PASSWORD = env.str('EMAIL_HOST_PASSWORD')
+#EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS')
+#EMAIL_PORT = env.int('EMAIL_PORT')
+#EMAIL_HOST = env.str('EMAIL_HOST')
+
+#Jazzmin
 JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
     "site_title": "Gerenciador de cursos",
